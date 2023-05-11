@@ -17,9 +17,11 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> {
         title: const Text('Counter Functions'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded), 
+            icon: const Icon(Icons.refresh_rounded),
             onPressed: () {
-              setState(() { clickCounter = 0; });
+              setState(() {
+                clickCounter = 0;
+              });
             },
           ),
         ],
@@ -29,11 +31,11 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '$clickCounter', 
+              '$clickCounter',
               style: const TextStyle(fontSize: 160, fontWeight: FontWeight.w100),
             ),
             Text(
-              'Click${ (clickCounter == 1) ? '' : 's' }', 
+              'Click${(clickCounter == 1) ? '' : 's'}',
               style: const TextStyle(fontSize: 25),
             ),
           ],
@@ -42,35 +44,58 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
-            shape: const StadiumBorder(), // Boton circular
-            child: const Icon(Icons.refresh_outlined),
+          CustomFloatingButton(
+            icon: Icons.refresh_rounded,
             onPressed: () {
-              setState(() { clickCounter++; }); // Cambiar el estado para redibujar
+              setState(() { clickCounter = 0; });
             },
           ),
 
           const SizedBox(height: 12),
 
-          FloatingActionButton(
-            shape: const StadiumBorder(), // Boton circular
-            child: const Icon(Icons.plus_one),
+          CustomFloatingButton(
+            icon: Icons.exposure_minus_1_rounded,
             onPressed: () {
-              setState(() { clickCounter++; }); // Cambiar el estado para redibujar
+              setState(() { 
+                if (clickCounter == 0) return; 
+                clickCounter--; 
+              });
             },
           ),
 
           const SizedBox(height: 12),
 
-          FloatingActionButton(
-            shape: const StadiumBorder(), // Boton circular
-            child: const Icon(Icons.exposure_minus_1_outlined),
+          CustomFloatingButton(
+            icon: Icons.plus_one,
             onPressed: () {
-              setState(() { clickCounter--; }); // Cambiar el estado para redibujar
+              setState(() { clickCounter++; });
             },
           ),
         ],
       )
+    );
+  }
+}
+
+class CustomFloatingButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback? onPressed;
+
+  const CustomFloatingButton({
+    super.key,
+    required this.icon,
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      shape: const StadiumBorder(), // Boton circular
+      enableFeedback: true, // sonido en el boton
+      elevation: 5,
+      // backgroundColor: Colors.amber,
+      onPressed: onPressed,
+      child: Icon(icon),
     );
   }
 }
